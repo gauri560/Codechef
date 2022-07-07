@@ -1,0 +1,245 @@
+/*question:
+Chef is hosting a party at his house and N people are invited to it. Everyone has arrived and they are eager to make a group and chit-chat.
+
+The ith person prefers to be in a group of exactly Pi people (including himself). A person who is not in a group of preferred size gets upset. Find whether Chef would be able to assign every person to a group such that everyone remains happy.
+
+Input Format
+The first line of input will contain a single integer T, denoting the number of test cases.
+Each test case consists of multiple lines of input.
+The first line of each test case contains an integer N — the number of people at the party.
+The next line contains the array P — where Pi denotes the preferred group size for ith person.
+
+
+Output Format
+For each test case, output YES, if Chef can assign every person to a group such that everyone remains happy. Otherwise output NO.
+The output is case-insensitive, meaning that outputs such as yES, YeS, YES and yes mean the same.
+
+Constraints
+1≤T≤1000
+2≤N≤105
+2≤Pi≤N
+Sum of N over all test cases does not exceed 105.
+
+
+Sample Input 1 
+4
+5
+2 3 2 3 3
+5
+5 5 5 5 5
+5
+3 2 2 3 2
+4
+4 4 4 3
+Sample Output 1 
+YES
+YES
+NO
+NO
+
+
+Explanation
+Test case 1:
+
+Person 1 and 3 can make a group (As both want to be in a group of 2).
+Person 2, 4 and 5 can make a group (As they all want to be in a group of 3).
+So, there is a possible arrangement that Chef can make so that all of them are happy.
+
+Test case 2:
+
+All of the 5 people can make a group (As all want to be in a group of 5).
+So, there is a possible arrangement that Chef can make so that all of them are happy.
+
+Test case 3: It can be shown that there is no possible arrangement that Chef can make so that all of them are happy.
+
+Test case 4: It can be shown that there is no possible arrangement that Chef can make so that all of them are happy.
+
+*/
+
+
+
+
+
+
+
+
+
+// Working program using Reader Class
+import java.io.DataInputStream;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.*;
+import java.util.StringTokenizer;
+ 
+public class Main {
+    static class Reader {
+        final private int BUFFER_SIZE = 1 << 16;
+        private DataInputStream din;
+        private byte[] buffer;
+        private int bufferPointer, bytesRead;
+ 
+        public Reader()
+        {
+            din = new DataInputStream(System.in);
+            buffer = new byte[BUFFER_SIZE];
+            bufferPointer = bytesRead = 0;
+        }
+ 
+        public Reader(String file_name) throws IOException
+        {
+            din = new DataInputStream(
+                new FileInputStream(file_name));
+            buffer = new byte[BUFFER_SIZE];
+            bufferPointer = bytesRead = 0;
+        }
+ 
+        public String readLine() throws IOException
+        {
+            byte[] buf = new byte[64]; // line length
+            int cnt = 0, c;
+            while ((c = read()) != -1) {
+                if (c == '\n') {
+                    if (cnt != 0) {
+                        break;
+                    }
+                    else {
+                        continue;
+                    }
+                }
+                buf[cnt++] = (byte)c;
+            }
+            return new String(buf, 0, cnt);
+        }
+ 
+        public int nextInt() throws IOException
+        {
+            int ret = 0;
+            byte c = read();
+            while (c <= ' ') {
+                c = read();
+            }
+            boolean neg = (c == '-');
+            if (neg)
+                c = read();
+            do {
+                ret = ret * 10 + c - '0';
+            } while ((c = read()) >= '0' && c <= '9');
+ 
+            if (neg)
+                return -ret;
+            return ret;
+        }
+ 
+        public long nextLong() throws IOException
+        {
+            long ret = 0;
+            byte c = read();
+            while (c <= ' ')
+                c = read();
+            boolean neg = (c == '-');
+            if (neg)
+                c = read();
+            do {
+                ret = ret * 10 + c - '0';
+            } while ((c = read()) >= '0' && c <= '9');
+            if (neg)
+                return -ret;
+            return ret;
+        }
+ 
+        public double nextDouble() throws IOException
+        {
+            double ret = 0, div = 1;
+            byte c = read();
+            while (c <= ' ')
+                c = read();
+            boolean neg = (c == '-');
+            if (neg)
+                c = read();
+ 
+            do {
+                ret = ret * 10 + c - '0';
+            } while ((c = read()) >= '0' && c <= '9');
+ 
+            if (c == '.') {
+                while ((c = read()) >= '0' && c <= '9') {
+                    ret += (c - '0') / (div *= 10);
+                }
+            }
+ 
+            if (neg)
+                return -ret;
+            return ret;
+        }
+ 
+        private void fillBuffer() throws IOException
+        {
+            bytesRead = din.read(buffer, bufferPointer = 0,
+                                 BUFFER_SIZE);
+            if (bytesRead == -1)
+                buffer[0] = -1;
+        }
+ 
+        private byte read() throws IOException
+        {
+            if (bufferPointer == bytesRead)
+                fillBuffer();
+            return buffer[bufferPointer++];
+        }
+ 
+        public void close() throws IOException
+        {
+            if (din == null)
+                return;
+            din.close();
+        }
+    }
+    
+public static void main (String[] args) throws java.lang.Exception
+	{
+	       try{
+	              Reader obj = new Reader();
+	              int t = obj.nextInt();
+	              while (t > 0)
+	              {
+	                     t--;
+	                     int n = obj.nextInt();
+	                     int arr[] = new int[n];
+	                     int freq[] = new int[n+1];
+	                     int i;
+	                     boolean b = true;
+	                     for (i=0;i<n;i++)
+	                     {
+	                         arr[i] = obj.nextInt();
+	                         freq[arr[i]]++;
+	                     }
+	                     for (i=2;i<=n;i++)
+	                     {
+	                            if (freq[i] == 0)
+	                            {
+	                                   continue;
+	                            }
+	                            else
+	                            {
+	                                   if ((freq[i] % i) != 0)
+	                                   {
+	                                          b = false;
+	                                          break;
+	                                   }
+	                            }
+	                     }
+	                     if (b)
+	                     {
+	                            System.out.println ("YES");
+	                     }
+	                     else
+	                     {
+	                            System.out.println ("NO");
+	                     }
+	              }
+		}catch(Exception e){
+			return;
+		}
+	}
+}
